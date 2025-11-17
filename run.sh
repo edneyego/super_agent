@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Super Agent - Script de Execução
+# Super Agent - Script de Execução (Standalone Mode)
 # Autor: Edney Oliveira
 
 set -e
@@ -62,106 +62,59 @@ fi
 log_success "Configurações carregadas"
 
 # Cria diretório de logs se não existir
-if [ ! -d "logs" ]; then
-    log_info "Criando diretório de logs..."
-    mkdir -p logs
-fi
+mkdir -p logs
 
-# Função para cleanup
-cleanup() {
-    log_info "Encerrando processos..."
-    if [ ! -z "$MCP_PID" ]; then
-        kill $MCP_PID 2>/dev/null || true
-        log_success "MCP Server encerrado"
-    fi
-    if [ ! -z "$ORCH_PID" ]; then
-        kill $ORCH_PID 2>/dev/null || true
-        log_success "Orquestrador encerrado"
-    fi
-    exit 0
-}
+# Verifica modo de execução
+MODE="${1:-cli}"
 
-trap cleanup SIGINT SIGTERM
+case "$MODE" in
+    "cli")
+        log_info "Modo: CLI - Executando query única"
+        if [ -z "$2" ]; then
+            log_error "Uso: $0 cli 'Sua pergunta aqui'"
+            exit 1
+        fi
+        
+        log_info "Query: $2"
+        python src/cli.py "$2"
+        ;;
+        
+    "interactive")
+        log_info "Modo: Interativo"
+        python src/cli.py --interactive
+        ;;
+        
+    "test")
+        log_info "Modo: Teste - Executando queries de exemplo"
+        echo ""
+        
+        log_info "Teste 1: Weather Agent"
+        python src/cli.py "Como está o clima em São Paulo?"
+        echo ""
+        
+        log_info "Teste 2: Information Agent"
+        python src/cli.py "O que é um sistema multi-agente?"
+        echo ""
+        
+        log_success "Testes concluídos!"
+        ;;
+        
+    "server")
+        log_info "Modo: MCP Server - Iniciando servidor standalone"
+        log_warning "Servidor MCP em modo STDIO. Use um cliente MCP para conectar."
+        python src/mcp/server.py
+        ;;
+        
+    *)
+        log_error "Modo desconhecido: $MODE"
+        echo ""
+        echo "Uso:"
+        echo "  $0 cli 'Sua pergunta'    - Executa uma query"
+        echo "  $0 interactive           - Modo interativo"
+        echo "  $0 test                  - Executa testes"
+        echo "  $0 server                - Inicia MCP Server"
+        exit 1
+        ;;
+esac
 
-# Iniciar MCP Server
-log_info "Iniciando MCP Server..."
-python src/mcp/server.py > logs/mcp_server.log 2>&1 &
-MCP_PID=$!
-log_success "MCP Server iniciado (PID: $MCP_PID)"
-
-# Aguarda MCP Server estar pronto
-log_info "Aguardando MCP Server ficar pronto..."
-sleep 3
-
-# Verifica se MCP Server está rodando
-if ! ps -p $MCP_PID > /dev/null; then
-    log_error "MCP Server falhou ao iniciar!"
-    log_info "Veja os logs em: logs/mcp_server.log"
-    cat logs/mcp_server.log
-    exit 1
-fi
-
-log_success "MCP Server pronto"
-
-# Iniciar Orquestrador
-log_info "Iniciando Orquestrador..."
-python src/orchestrator/main.py > logs/orchestrator.log 2>&1 &
-ORCH_PID=$!
-log_success "Orquestrador iniciado (PID: $ORCH_PID)"
-
-# Aguarda Orquestrador estar pronto
-log_info "Aguardando Orquestrador ficar pronto..."
-sleep 3
-
-# Verifica se Orquestrador está rodando
-if ! ps -p $ORCH_PID > /dev/null; then
-    log_error "Orquestrador falhou ao iniciar!"
-    log_info "Veja os logs em: logs/orchestrator.log"
-    cat logs/orchestrator.log
-    cleanup
-    exit 1
-fi
-
-log_success "Orquestrador pronto"
-
-echo ""
-log_success "✨ Sistema iniciado com sucesso! ✨"
-echo ""
-log_info "Componentes rodando:"
-echo "  - MCP Server (PID: $MCP_PID)"
-echo "  - Orquestrador (PID: $ORCH_PID)"
-echo ""
-log_info "Para interagir com o sistema, use:"
-echo "  python src/cli.py 'Sua pergunta aqui'"
-echo "  ou"
-echo "  python src/cli.py --interactive"
-echo ""
-log_info "Logs disponíveis em:"
-echo "  - MCP Server: logs/mcp_server.log"
-echo "  - Orquestrador: logs/orchestrator.log"
-echo ""
-log_warning "Pressione Ctrl+C para encerrar o sistema"
-echo ""
-
-# Exemplos de queries
-log_info "Executando queries de teste..."
-echo ""
-
-log_info "Teste 1: Weather Agent"
-python src/cli.py "Como está o clima em São Paulo?"
-echo ""
-
-log_info "Teste 2: Data Agent"
-python src/cli.py "Quantas reservas temos no banco de dados?"
-echo ""
-
-log_info "Teste 3: Finance Agent"
-python src/cli.py "Converta 1000 USD para BRL"
-echo ""
-
-log_success "Testes concluídos!"
-echo ""
-
-# Mantém script rodando
-log_info "Sistema em execução. Pressione Ctrl+C para encerrar."
-wait
+log_success "Concluído!"

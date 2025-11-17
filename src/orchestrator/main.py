@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 from dotenv import load_dotenv
+from src.orchestrator.state import AgentState
 
 # Configuração de logging
 logging.basicConfig(
@@ -25,11 +26,10 @@ from langchain_anthropic import ChatAnthropic
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Importar agentes
-from agents.base import AgentState
-from agents.weather import WeatherAgent
-from agents.data import DataAgent
-from agents.finance import FinanceAgent
-from agents.information import InformationAgent
+from src.agents.weather_agent import WeatherAgent
+from src.agents.data_agent import DataAgent
+from src.agents.finance_agent import FinanceAgent
+from src.agents.info_agent import InformationAgent
 
 
 def get_llm():
