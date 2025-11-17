@@ -1,0 +1,41 @@
+{
+  "name": "info_agent",
+  "description": "Especialista em informações gerais e explicações conceituais",
+  "version": "1.0.0",
+  "capabilities": [
+    "Responder perguntas gerais",
+    "Explicar conceitos",
+    "Fornecer informações contextuais",
+    "Definir termos técnicos",
+    "Educar sobre tópicos diversos"
+  ],
+  "tools": [
+    "get_information",
+    "explain_concept"
+  ],
+  "keywords": [
+    "o que é",
+    "explique",
+    "defina",
+    "como funciona",
+    "informação",
+    "conceito",
+    "significa",
+    "definir"
+  ],
+  "examples": [
+    "O que é arquitetura hexagonal?",
+    "Explique o protocolo MCP",
+    "Como funciona o LangGraph?",
+    "O que significa MCP?",
+    "Defina multi-agente"
+  ],
+  "response_format": {
+    "type": "text",
+    "includes": [
+      "explanation",
+      "examples",
+      "related_concepts"
+    ]
+  }
+}

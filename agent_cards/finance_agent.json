@@ -1,0 +1,48 @@
+{
+  "name": "finance_agent",
+  "description": "Especialista em operações financeiras e cálculos monetários",
+  "version": "1.0.0",
+  "capabilities": [
+    "Conversão de moedas",
+    "Cálculo de juros compostos",
+    "Cálculo de juros simples",
+    "Operações financeiras",
+    "Taxas de câmbio"
+  ],
+  "tools": [
+    "convert_currency",
+    "calculate_interest",
+    "get_exchange_rate"
+  ],
+  "keywords": [
+    "converter",
+    "moeda",
+    "currency",
+    "dólar",
+    "real",
+    "euro",
+    "câmbio",
+    "juros",
+    "interest",
+    "calcular",
+    "financeiro",
+    "taxa"
+  ],
+  "examples": [
+    "Converta 1000 USD para BRL",
+    "Qual a taxa de câmbio do euro?",
+    "Calcule juros compostos de 10000 a 0.5% por 12 meses",
+    "Quanto é 500 euros em reais?",
+    "Taxa de juros de 5% ao ano em 1000 reais"
+  ],
+  "response_format": {
+    "type": "structured",
+    "includes": [
+      "original_amount",
+      "converted_amount",
+      "exchange_rate",
+      "currency_from",
+      "currency_to"
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "data_agent",
+  "description": "Especialista em consultas e análise de dados do banco de dados",
+  "version": "1.0.0",
+  "capabilities": [
+    "Executar consultas SQL",
+    "Analisar dados de reservas",
+    "Gerar estatísticas",
+    "Criar relatórios",
+    "Consultar banco de dados"
+  ],
+  "tools": [
+    "query_database",
+    "get_statistics",
+    "list_bookings"
+  ],
+  "keywords": [
+    "banco",
+    "database",
+    "consulta",
+    "query",
+    "reserva",
+    "booking",
+    "dados",
+    "data",
+    "estatística",
+    "relatório",
+    "popular",
+    "quantas",
+    "listar"
+  ],
+  "examples": [
+    "Quantas reservas temos no banco?",
+    "Qual o destino mais popular?",
+    "Mostre as últimas 5 reservas",
+    "Liste todas as reservas para Paris",
+    "Qual cliente tem mais reservas?"
+  ],
+  "response_format": {
+    "type": "tabular",
+    "includes": [
+      "query_result",
+      "row_count",
+      "columns",
+      "data"
+    ]
+  }
+}

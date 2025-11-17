@@ -1,0 +1,45 @@
+{
+  "name": "weather_agent",
+  "description": "Especialista em informações meteorológicas e previsão do tempo",
+  "version": "1.0.0",
+  "capabilities": [
+    "Consultar clima atual",
+    "Obter previsão do tempo",
+    "Informar temperatura",
+    "Informar condições meteorológicas",
+    "Dados de umidade e vento"
+  ],
+  "tools": [
+    "get_weather",
+    "get_forecast"
+  ],
+  "keywords": [
+    "clima",
+    "tempo",
+    "temperatura",
+    "previsão",
+    "meteorologia",
+    "weather",
+    "chuva",
+    "sol",
+    "vento",
+    "umidade"
+  ],
+  "examples": [
+    "Como está o clima em São Paulo?",
+    "Qual a temperatura no Rio de Janeiro?",
+    "Vai chover amanhã em Belo Horizonte?",
+    "Previsão do tempo para Curitiba",
+    "Como está o tempo em Brasília?"
+  ],
+  "response_format": {
+    "type": "structured",
+    "includes": [
+      "temperature",
+      "condition",
+      "humidity",
+      "wind_speed",
+      "location"
+    ]
+  }
+}
