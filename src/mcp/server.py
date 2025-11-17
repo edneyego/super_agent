@@ -16,8 +16,7 @@ logger = logging.getLogger(__name__)
 # Inicializa FastMCP
 mcp = FastMCP(
     name="Super Agent MCP Server",
-    version="1.0.0",
-    description="Servidor MCP puro para Sistema Multi-Agente"
+    version="1.0.0"
 )
 
 
@@ -112,5 +111,7 @@ async def main():
     await mcp.run()
 
 
+# USAR ISTO:
 if __name__ == "__main__":
-    asyncio.run(main())
+    mcp.run()
+

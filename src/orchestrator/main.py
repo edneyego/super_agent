@@ -1,9 +1,11 @@
 """Orquestrador Principal do Sistema Multi-Agente"""
 
+
 import asyncio
 import logging
 import os
 from typing import Dict, Any
+
 
 from src.agents.weather_agent import WeatherAgent
 from src.agents.data_agent import DataAgent
@@ -11,6 +13,7 @@ from src.agents.finance_agent import FinanceAgent
 from src.agents.info_agent import InformationAgent
 from src.orchestrator.supervisor import Supervisor
 from src.orchestrator.mcp_client import MCPClient
+
 
 logging.basicConfig(
     level=os.getenv("LOG_LEVEL", "INFO"),
@@ -128,5 +131,25 @@ async def main():
     await orchestrator.stop()
 
 
+def run():
+    """Wrapper para executar o main de forma segura."""
+    try:
+        # Tenta obter o loop existente
+        loop = asyncio.get_running_loop()
+        # Se já existe um loop, cria uma task
+        return loop.create_task(main())
+    except RuntimeError:
+        # Se não existe loop, cria um novo com asyncio.run()
+        return asyncio.run(main())
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except RuntimeError as e:
+        if "asyncio" in str(e).lower():
+            logger.warning("Loop já está rodando, usando get_event_loop()")
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(main())
+        else:
+            raise

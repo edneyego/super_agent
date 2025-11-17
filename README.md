@@ -234,6 +234,13 @@ pytest --cov=src
 pytest tests/test_agents.py -v
 ```
 
+## Caso precise matar um processo
+```bash
+ps aux | grep mcp
+pkill -f mcp
+```
+
+
 ## 📊 Stack Tecnológica
 
 - **Python 3.13**: Linguagem base
